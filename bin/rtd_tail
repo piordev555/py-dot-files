@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# pip install rainbow
+tail -f -n 200 ~/rtfd/code/readthedocs.org/logs/debug.log | \
+  ~/.pyenv/versions/readthedocs.org/bin/rainbow \
+    --yellow=' INFO ' \
+    --cyan=' WARNING ' \
+    --red=' ERROR ' \
+    --faint='.* DEBUG .*' \
+    --blue=' ([a-z0-9_\.])+:\d{2,3}\[\d+\]' \
+    --green='POST |GET |PUT |DELETE |OPTIONS ' \
+    --magenta='\d{2,4}\[\d+\]' \
+    --blue='\[\d\d\d\d\d+\]' \
+    --red='^Traceback \(most recent call last\):|^  File ".*", line \d+, in .*|^    .*|^[A-Z].*' \
+    --reset-all='^\{.*}$' \
+    --faint='\[[a-zA-Z0-9_/\.-]+\]$' \
+    --intensity-reset-before='git |bzr |pdflatex |pip |conda |mv |ln |cat |sphinx-build |python2\.7 |python3\.5 |python 3|conda ' \
+    --bold='git |bzr |pdflatex |pip |conda |mv |ln |cat |sphinx-build |python2\.7 |python3\.5 |python 3|conda '

@@ -1,0 +1,4 @@
+#!/bin/bash --login
+rvm use 2.1.1@ta
+cd ~/Source/ta-commute-challenge/designs2014
+bundle exec middleman build

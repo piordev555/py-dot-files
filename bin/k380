@@ -1,0 +1,7 @@
+# ; -*- mode: sh -*-
+#!/bin/bash
+
+# Logitech K380
+
+ID=`xinput list | grep "Keyboard K380" | awk '{ print $4 }' | sed -e 's/id=//g'`
+setxkbmap -device $ID -model pc105 -layout en_US -variant ",deadtilde" -option "compose:ralt"

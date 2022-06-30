@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import subprocess
+
+# EXAMPLE OF wmctrl OUTPUT
+
+# $ wmctrl -l -x
+# 0x01000004 -1 xfce4-panel.Xfce4-panel  victoria xfce4-panel
+# 0x0100002a -1 xfce4-panel.Xfce4-panel  victoria xfce4-panel
+# 0x0100002d -1 xfce4-panel.Xfce4-panel  victoria xfce4-panel
+# 0x01800003 -1 xfdesktop.Xfdesktop   victoria Escritorio
+# 0x03800004  0 xfce4-terminal.Xfce4-terminal  victoria Terminal - humitos@victoria: ~
+# 0x01600003  0 Thunar.Thunar         victoria humitos - Administrador de archivos
+# 0x040000a3  0 emacs.Emacs           victoria emacs-victoria: ~/bin/change-window [-]
+# 0x024000ab  0 Navigator.Firefox     victoria Inbox (0) - someone@gmail.com - Gmail - Mozilla Firefox
+# 0x04200db8  0 Pidgin.Pidgin         victoria (someone@gmail.com)
+# 0x0420006a  0 Pidgin.Pidgin         victoria Lista de amigos
+# 0x03600052  0 sun-awt-X11-XFramePeer.org-openstreetmap-josm-Main  victoria Editor Java de OpenStreetMap
+# 0x03e00001  0 Google-chrome.Google-chrome  victoria Nueva pestana - Google Chrome
+
+# XFCE4 XML FILE
+# .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+# [...]
+#       <property name="&lt;Super&gt;a" type="string" value="/home/humitos/bin/change-window thunar"/>
+#       <property name="&lt;Super&gt;c" type="string" value="/home/humitos/bin/change-window pidgin"/>
+#       <property name="&lt;Super&gt;j" type="string" value="/home/humitos/bin/change-window josm-latest"/>
+#       <property name="&lt;Super&gt;g" type="string" value="/home/humitos/bin/change-window google-chrome"/>
+# [...]
+
+TERMINAL_ENCODING = subprocess.getoutput('locale charmap')
+LIST_WINDOWS = 'wmctrl -l -x | grep -i "{}" | grep -v grep'
+CHANGE_WINDOW = 'wmctrl -i -a {}'
+COMMANDS_TO_WMCMD = {
+    'emacs': {
+        'command': 'emacs --no-site-file --no-site-lisp',
+        'window-title': 'emacs@julia',
+        'open-new': False,
+    },
+    'thunar': 'Thunar.Thunar',
+    'firefox': {
+        'command': 'firefox',
+        'window-title': 'Navigator.Firefox',
+        'open-new': True,
+    },
+    'google-chrome': {
+        'command': 'google-chrome-stable --profile-directory="Profile 1"',
+        'window-title': 'Google-chrome.Google-chrome',
+        'open-new': False,
+    },
+    'slack': {
+        # 'command':
+        # 'firefox --safe-mode --new-window https://readthedocs.slack.com/',
+        # 'google-chrome-stable --app=https://irccloud.com/ --profile-directory="Profile 1"',
+        # 'slack',
+        'window-title': ' | Read the Docs - Mozilla Firefox',
+        'open-new': False,
+        'switch-to-other-desktop': True,
+    },
+    'whatsapp': {
+        'command':
+        'google-chrome-stable --app=https://web.whatsapp.com/ --profile-directory="Profile 1"',
+        'window-title': 'WhatsApp',
+        'open-new': False,
+    },
+    'telegram': {
+        'command':
+        'google-chrome-stable --app="https://web.telegram.org/" --profile-directory="Profile 1"',
+        'window-title': 'web.telegram.org.Google-chrome',
+        'open-new': False,
+    },
+    'terminal': {
+        'command': 'kitty',
+        'window-title': 'kitty.kitty',
+        'open-new': True,
+    },
+    'thunderbird': {
+        'command': 'thunderbird-beta',
+        'window-title': 'Mozilla Thunderbird',
+        'open-new': False,
+    },
+}
+
+
+def get_window_and_desktop_id(command):
+    window_title = COMMANDS_TO_WMCMD.get(command)
+    if window_title is None:
+        print('Command not found.')
+        sys.exit(1)
+    if isinstance(window_title, dict):
+        window_title = window_title.get('window-title')
+
+    output = subprocess.getoutput(LIST_WINDOWS.format(window_title))
+
+    application = COMMANDS_TO_WMCMD.get(command)
+    current_desktop_id = get_current_desktop_id()
+    for line in output.splitlines():
+        win_id, desktop_id = line.split()[:2]
+        if current_desktop_id == desktop_id or application.get('switch-to-other-desktop', False):
+            return win_id, desktop_id
+    return '', ''
+
+
+def get_current_desktop_id():
+    output = subprocess.getoutput("wmctrl -d | grep '*'")
+    return output.split()[0]
+
+
+def main():
+    program = sys.argv[1]
+    new_window = '--new-window' in sys.argv
+    application = COMMANDS_TO_WMCMD.get(program)
+
+    if new_window:
+        cmd = application.get('command')
+        print('Command to execute:', cmd)
+        os.system(f'nice {cmd} &')
+        return
+
+    win_id, desktop_id = get_window_and_desktop_id(program)
+    print('win_id:', win_id)
+    print('desktop_id:', desktop_id)
+
+    if win_id != '':
+        # Change to window opened
+        change_window_cmd = CHANGE_WINDOW.format(win_id)
+        current_desktop_id = get_current_desktop_id()
+        if current_desktop_id == desktop_id:
+            if program == 'slack':
+                brotab_cmd = (
+                    "fades -d brotab -x brotab activate `fades -d brotab -x brotab list | grep irccloud | awk '{ print $1 }'`"
+                )
+                print(brotab_cmd)
+                os.system(brotab_cmd)
+        else:
+            if application.get('open-new', False):
+                os.system(change_window_cmd)
+        os.system(change_window_cmd)
+
+    else:
+        # Execute the program
+        if isinstance(application, dict):
+            cmd = application['command']
+        else:
+            cmd = program
+        print('Command to execute:', cmd)
+        os.system(f'nice {cmd} &')
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,15 @@
+#! /bin/sh
+
+git log \
+    --author="^Manuel Kaufmann" \
+    --date-order \
+    --pretty=format:"%ad | %s" \
+    --date=iso \
+    | \
+    grep `date "+%Y-%m-%d"` \
+    | \
+    awk '{ x = $0 "\n" x } END { printf "%s", x }' \
+    | \
+    cut -c29- \
+    | \
+    egrep -v "^Merge"

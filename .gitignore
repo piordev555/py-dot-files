@@ -1,0 +1,16 @@
+*~
+*.pyc
+*.pyo
+*.restclient
+.ignore
+.agignore
+.grepignore
+bin/node_modules
+/bin/chromedriver
+/bin/gmailfilters
+/bin/geckodriver
+/bin/json
+/bin/lnav
+/bin/osmconvert
+/bin/osmfilter
+/bin/pbftoosm

@@ -1,0 +1,21 @@
+export LESS="-R"
+
+# Python "pip" configurations
+export PIP_USE_WHEEL=1
+
+export BROWSER=firefox
+
+export ALTERNATE_EDITOR=emacs
+export EDITOR=emacsclient
+export VISUAL=emacsclient
+
+# https://github.com/nodenv/nodenv#installation
+export PATH="$HOME/.nodenv/bin:$HOME/.nodenv/shims:$PATH"
+
+# https://github.com/pyenv/pyenv-virtualenvwrapper
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+
+# Use binaries from current node modules
+export PATH=./node_modules/.bin:$PATH
+
+export DIRENV_WARN_TIMEOUT=10s

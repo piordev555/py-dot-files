@@ -1,0 +1,23 @@
+#!/bin/bash
+# Connect Seagate Backup Plus Drive
+# Mount point: /run/media/humitos/Seagate Backup Plus Drive
+
+# Connect SDCARD GoPro
+# SDCARD Mount Point: /run/media/humitos/8765-4321/DCIM/100GOPRO/
+
+set -e
+
+# BE CAREFUL with ``--remove-source-files`` since it removes the files
+# transfered from source into destination
+rsync -rav \
+      --inplace \
+      --size-only \
+      --exclude '*.THM' \
+      --exclude '*.LRV' \
+      --exclude '.Trash-1000' \
+      --remove-source-files \
+      /run/media/humitos/3736-6534 \
+      /run/media/humitos/Seagate\ Backup\ Plus\ Drive/GoPro\ Hero\ Session\ 5/`date +"%Y-%m-%d"`
+
+# /run/media/humitos/7FB4-0525/DCIM/100GOPRO/ \
+# | pv -epas `du -sb /run/media/humitos/8765-4321 | awk '{print $1}'`

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# pip install watchdog
+# sudo sysctl fs.inotify.max_user_watches=16384
+WATCHMEDO=/home/humitos/.pyenv/versions/rtd2/bin/watchmedo
+CELERY=/home/humitos/.pyenv/versions/rtd2/bin/celery
+
+cd /home/humitos/rtfd/code/readthedocs.org
+
+# PYTHONOPTIMIZE allows daemon celery processes to create children and
+# we need this for `ripdb`
+# https://docs.python.org/2/using/cmdline.html#envvar-PYTHONOPTIMIZE
+# https://github.com/celery/celery/issues/1709#issuecomment-29731104
+PYTHONOPTIMIZE=true CELERY=t $WATCHMEDO auto-restart \
+  --patterns="*.py" \
+  --ignore-patterns="*.#*.py;./user_builds/*;./public_*;./private_*;*.pyo;*.pyc;*flycheck*.py;./media/*;./.tox/*" \
+  --ignore-directories \
+  --recursive \
+  --signal=SIGTERM \
+  --kill-after=5 \
+  --interval=3 \
+  -- \
+  $CELERY -A readthedocs worker -Q default,celery,web,builder -l DEBUG -c 2

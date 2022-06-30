@@ -1,0 +1,8 @@
+#!/bin/sh
+
+while true;
+do
+    espeak -v es mate ;
+    notify-send -i terminal -t 2000 Mate "Cebar un mate" ;
+    sleep 180 ;
+done

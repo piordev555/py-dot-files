@@ -1,0 +1,6 @@
+#!/bin/sh
+
+SOURCE="$HOME/.encrypted"
+TARGET="$HOME/secure"
+
+encfs --idle 30 -o allow_root "$SOURCE" "$TARGET"

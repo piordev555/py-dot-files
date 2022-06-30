@@ -1,0 +1,59 @@
+#!/bin/bash
+# Connect Seagate Backup Plus Drive
+# Mount point: /run/media/humitos/Seagate Backup Plus Drive
+
+set -e
+
+# Connect Realme Phone
+mkdir -p ~/realme
+fusermount -u realme || echo
+udisksctl mount -b /dev/sda1 || echo
+
+echo "Mounting the phone"
+aft-mtp-mount ~/realme
+
+# BE CAREFUL with ``--remove-source-files`` since it removes the files
+# transfered from source into destination
+# TODO: add more directories here once I found more
+for x in Documents Pictures DCIM bluetooth Download Telegram WhatsApp Slack;
+do
+    rsync -rav \
+          --progress \
+          --omit-dir-times \
+          --no-perms \
+          --inplace \
+          --size-only \
+          --exclude .thumbnails \
+          --exclude .music \
+          --exclude .cache \
+          --exclude .Shared \
+          --exclude .trash \
+          --exclude debug_log \
+          --remove-source-files \
+          ~/realme/Internal\ shared\ storage/$x/ \
+          '/run/media/humitos/Seagate Backup Plus Drive/realme8/'$x;
+done
+
+# Old path
+# /run/user/1000/gvfs/mtp:host=realme_RMX3085_DE5DZHHI6LUOFQ6X/Internal\ shared\ storage/$x/ \
+
+# Same that previous command but without deleting files from the phone
+for x in Android/data/net.osmand;
+do
+    rsync -rav \
+          --progress \
+          --omit-dir-times \
+          --no-perms \
+          --inplace \
+          --size-only \
+          --exclude .thumbnails \
+          --exclude .music \
+          --exclude .cache \
+          --exclude .Shared \
+          --exclude .trash \
+          --exclude debug_log \
+          ~/realme/Internal\ shared\ storage/$x/ \
+          '/run/media/humitos/Seagate Backup Plus Drive/realme8/'$x;
+done
+
+fusermount -u realme || echo "Phone already un-mounted"

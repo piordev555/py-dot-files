@@ -1,0 +1,10 @@
+#!/bin/bash
+
+RTD_PATH=/home/humitos/rtfd/code
+RTD_REPOSITORIES="blog internal-docs pydoc.io readthedocs-common readthedocs-docker-images readthedocs.org readthedocs-ops recommonmark sphinx-version-warning sphinx_rtd_theme test-builds sphinx-notfound-page sphinx-hoverxref sphinx-autoapi ethical-ad-server readthedocs-sphinx-ext ethical-ad-client"
+
+for REPO in ${RTD_REPOSITORIES}; do
+  echo "Updating '${REPO}'...";
+  git --git-dir ${RTD_PATH}/${REPO}/.git cleanup-gone-branches;
+  git --git-dir ${RTD_PATH}/${REPO}/.git cleanup-merged-branches;
+done

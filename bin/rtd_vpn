@@ -1,0 +1,6 @@
+#!/bin/bash
+
+VPN=$1  # "vpn.ops.readthedocs.org" or "vpn.ops.readthedocs.com"
+ACTION=$2  # "up" or "down"
+
+nmcli connection ${ACTION} ${VPN}

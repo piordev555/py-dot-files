@@ -1,0 +1,66 @@
+[core]
+editor = "emacs -nw --quick"
+excludesfile = /home/humitos/.gitignore_global
+
+[color]
+diff = auto
+ui = auto
+
+[user]
+name = Manuel Kaufmann
+email = humitos@gmail.com
+
+[pager]
+log = diff-highlight | less
+show = diff-highlight | less
+diff = diff-highlight | less
+
+[color "diff"]
+meta = yellow bold
+frag = magenta bold
+old = red bold
+new = green bold
+whitespace = red reverse
+
+[alias]
+b = branch
+# https://github.com/brandon-rhodes/homedir/blob/master/.gitconfig
+ci = commit
+amend = commit --amend
+co = checkout
+d = diff
+l = log --graph --pretty=oneline --abbrev-commit --decorate=short
+lp = log -p
+ls = log --stat
+st = status -s
+locate = ls-tree --name-only -r HEAD
+pr = "!f() { git fetch origin pull/${1}/head:pr/${1}; git checkout pr/${1}; }; f"
+prpush = "!f() { git push git@github.com:${2}/python-docs-es.git pr/${1}:${3}; }; f"
+serve-this = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
+# Serve all RTD external repositories to test them
+# git clone git://localhost/requests
+serve-readthedocs = daemon --verbose --export-all --base-path=/home/humitos/rtfd/repos --reuseaddr
+# Delete branches that were already merged
+# https://stackoverflow.com/a/33548037/2187091
+cleanup-gone-branches = "!git fetch --prune && for branch in `git branch -vv | grep -E ': (gone|desaparecido)' | grep -v '*' | gawk '{print $1}'`; do git branch -D $branch; done"
+# https://gist.github.com/schacon/942899
+cleanup-merged-branches = "!git fetch --prune && for branch in `git branch --merged | grep -v '*' | grep -v master | grep -v develop`; do git branch -d $branch; done"
+
+
+[push]
+default = simple
+
+[merge]
+tool = meld
+
+[credential]
+helper = cache
+
+[magit]
+hideCampaign = true
+
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true

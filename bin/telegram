@@ -1,0 +1,3 @@
+# /home/humitos/.Telegram/Telegram
+google-chrome --app="https://web.telegram.org/" --profile-directory="Profile 2"
+

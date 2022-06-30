@@ -1,0 +1,9 @@
+#!/bin/bash
+
+/home/humitos/bin/switch-presentation-mode off
+
+# I stopped using this because the screen freezes with "This session is locked"
+# https://bbs.archlinux.org/viewtopic.php?id=249053
+# xflock4
+
+dm-tool lock

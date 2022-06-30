@@ -1,0 +1,9 @@
+#!/bin/bash
+
+MOZIO_PATH=/home/humitos/mozio
+MOZIO_REPOSITORIES="data-entry django-mozio-auth-client errors mozio mozio_auth mozio-chef-repo mozio-commons mozio-corporate mozio-locations mozio-restrictions-client mozio-search notifications ondemand"
+
+for REPO in ${MOZIO_REPOSITORIES}; do
+  echo "Updating '${REPO}'...";
+  git --git-dir ${MOZIO_PATH}/${REPO}/.git fetch origin --prune;
+done

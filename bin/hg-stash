@@ -1,0 +1,79 @@
+#/usr/bin/bash
+
+# https://gist.github.com/xFlatlinex/3841148
+
+opt=$1
+root=`hg root`
+stash=$root/.stash
+
+if [ -z $opt ]
+then
+    opt='save'
+fi
+
+case $opt in
+
+save)
+    echo "Stashing changes..."
+    if [ -f $stash ]; then
+        echo "Found previously stashed changes, merging..."
+        hg import --no-commit $stash > /dev/null
+    fi
+    hg diff > $stash
+    hg revert -a > /dev/null
+    echo "All changes stashed!"
+;;
+
+apply)
+    if [ ! -f $stash ]; then
+        echo "No stashed changes to apply."
+        exit
+    fi
+    hg import --no-commit $stash
+    echo "Stashed changes applied."
+    rm $stash
+;;
+
+drop)
+    if [ ! -f $stash ]; then
+        echo "No stashed changes to drop."
+        exit
+    fi
+    echo "Dropping stashed changes"
+    echo -n "WARNING! This can't be undone, are you sure? [y/N]"
+    read yno
+    case $yno in
+        [yY] | [yY][Ee][Ss] )
+            echo "The stashed changes were dropped!"
+            rm $stash
+        ;;
+        * | [nN] | [n|N][O|o] )
+            echo "The stashed changes were NOT dropped."
+        ;;
+    esac
+;;
+
+help)
+    read -d '' help <<"H"
+hg-stash [OPTION]
+
+Simple 'git stash' emulation for mercurial
+
+It saves the 'hg diff' output in a .stash file on the root of the repository and
+uses to apply the changes when called whith the 'apply' option.
+When called with no options 'save' is assumed.
+
+Options:
+    save    Saves the changes in a stash file and removes them from the working
+            copy
+    apply   Applies the stashed changes without commiting
+    drop    Drop the stashed changes
+    help    Shows this help
+H
+    echo "$help"
+;;
+
+*)
+    echo "Invalid option '$opt'"
+;;
+esac

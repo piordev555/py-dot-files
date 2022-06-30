@@ -1,0 +1,10 @@
+#!/bin/bash
+
+RTD_PATH=/home/humitos/rtfd/code
+RTD_REPOSITORIES="readthedocs-corporate readthedocs-corporate-ops readthedocs-ext readthedocs-sphinx-ext policy"
+
+for REPO in ${RTD_REPOSITORIES}; do
+  echo "Updating '${REPO}'...";
+  git --git-dir ${RTD_PATH}/${REPO}/.git cleanup-gone-branches;
+  git --git-dir ${RTD_PATH}/${REPO}/.git cleanup-merged-branches;
+done

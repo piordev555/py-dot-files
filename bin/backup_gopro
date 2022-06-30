@@ -1,0 +1,18 @@
+#!/bin/bash
+# Connect Seagate Backup Plus Drive
+# Mount point: /run/media/humitos/Seagate Backup Plus Drive
+
+# Connect GoPro
+
+# Find the proper device with ``jmtpfs -l`` and get the <busnum>,<devnum>
+jmtpfs gopro
+
+# BE CAREFUL with ``--remove-source-files`` since it removes the files
+# transfered from source into destination
+rsync -rav \
+      --inplace \
+      --size-only \
+      /home/humitos/gopro/GoPro\ MTP\ Client\ Disk\ Volume/DCIM/100GOPRO \
+      /run/media/humitos/Seagate\ Backup\ Plus\ Drive/GoPro\ Hero\ Session\ 5/`date +"%Y-%m-%d"`
+
+fusermount -u gopro

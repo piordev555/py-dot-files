@@ -1,0 +1,19 @@
+; Sample alias file for ``dj`` command
+
+; Put it in your home directory or in your 
+; project's manage.py directory
+
+[commands]
+r=runserver
+rp=runserver_plus
+
+s=shell
+sp=shell_plus
+
+t=test --noinput
+tp=test --keepdb
+test_plus=test --keepdb
+
+m=migrate
+mm=makemigrations
+cleanpyc=clean_pyc

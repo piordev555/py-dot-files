@@ -1,0 +1,45 @@
+# ;; Local Variables:
+# ;; eval: (flyspell-mode -1)
+# ;; End:
+
+# Packages installed in ArchLinux with `yaourt`
+
+emacs-git
+ff-git
+google-chrome
+linux-firmware-iwlwifi
+mkpasswd
+ministat-git
+pa-appliet-git
+packback-git
+pacolog
+redshift-gtk-git
+rpl
+spotify
+ttf-mac-fonts
+wrld
+xtitle
+skypeforlinux-bin
+
+
+fd-rs
+
+# theme for lightdm
+# https://github.com/Litarvan/lightdm-webkit-theme-litarvan
+lightdm-webkit-theme-litarvan
+
+
+# support h.254 GoPro videos with VA-API from Intel
+# https://wiki.videolan.org/VLC_GPU_Decoding/
+libvdpau-va-gl-i965
+libva-intel-driver
+
+# find raspberry in the same network
+# sudo netdiscover -i eth0
+netdiscover
+
+
+# https://github.com/cruegge/pam-gnupg
+pam-gnupg-git
+
+safecopy

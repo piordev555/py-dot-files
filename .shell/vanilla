@@ -1,0 +1,237 @@
+# ; -*- mode: sh;-*-
+
+# Archlinux Ultimate Install - .bashrc
+# by helmuthdu
+# OVERALL CONDITIONALS {{{
+_islinux=false
+[[ "$(uname -s)" =~ Linux|GNU|GNU/* ]] && _islinux=true
+
+_isarch=false
+[[ -f /etc/arch-release ]] && _isarch=true
+
+_isxrunning=false
+[[ -n "$DISPLAY" ]] && _isxrunning=true
+
+_isroot=false
+[[ $UID -eq 0 ]] && _isroot=true
+# }}}
+# PS1 CONFIG {{{
+  export TERM='xterm-256color'
+
+  if $_isxrunning; then
+    [[ -f $HOME/.dircolors_256 ]] && eval $(dircolors -b $HOME/.dircolors_256)
+
+     B='\[\e[1;38;5;33m\]'
+    LB='\[\e[1;38;5;81m\]'
+    GY='\[\e[1;38;5;242m\]'
+     G='\[\e[1;38;5;82m\]'
+     P='\[\e[1;38;5;161m\]'
+    PP='\[\e[1;38;5;93m\]'
+     R='\[\e[1;38;5;196m\]'
+     Y='\[\e[1;38;5;214m\]'
+     W='\[\e[0m\]'
+
+    get_prompt_symbol() {
+      [[ $UID == 0 ]] && echo "#" || echo "\$"
+    }
+
+    if [[ $PS1 && -f /usr/share/git/git-prompt.sh ]]; then
+      source /usr/share/git/completion/git-completion.bash
+      source /usr/share/git/git-prompt.sh
+
+      export GIT_PS1_SHOWDIRTYSTATE=1
+      export GIT_PS1_SHOWSTASHSTATE=1
+      export GIT_PS1_SHOWUNTRACKEDFILES=0
+
+      export PS1="$GY[$Y\u$GY@$P\h$GY:$B\W\$(__git_ps1 \"$GY|$LB%s\")$GY]$W\$(get_prompt_symbol) "
+    else
+      export PS1="$GY[$Y\u$GY@$P\h$GY:$B\W$GY]$W\$(get_prompt_symbol) "
+    fi
+  else
+    [[ -f $HOME/.dircolors ]] && eval $(dircolors -b $HOME/.dircolors)
+  fi
+#}}}
+# BASH OPTIONS {{{
+  shopt -s cdspell                 # Correct cd typos
+  shopt -s checkwinsize            # Update windows size on command
+  shopt -s histappend              # Append History instead of overwriting file
+  shopt -s cmdhist                 # Bash attempts to save all lines of a multiple-line command in the same history entry
+  shopt -s extglob                 # Extended pattern
+  shopt -s no_empty_cmd_completion # No empty completion
+  # COMPLETION {{{
+    complete -cf sudo
+    if [[ -f /etc/bash_completion ]]; then
+      . /etc/bash_completion
+    fi
+  #}}}
+#}}}
+# CONFIG {{{
+  # export PATH=/usr/local/bin:$PATH
+  if [[ -d "$HOME/bin" ]] ; then
+      PATH="$HOME/bin:$PATH"
+  fi
+  # CHROME {{{
+    if which google-chrome-stable &>/dev/null; then
+      export CHROME_BIN=/usr/bin/google-chrome-stable
+    fi
+  #}}}
+  # COLORED MANUAL PAGES {{{
+    # @see http://www.tuxarena.com/?p=508
+    # For colourful man pages (CLUG-Wiki style)
+    if $_isxrunning; then
+      export PAGER=less
+      export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
+      export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
+      export LESS_TERMCAP_me=$'\E[0m'           # end mode
+      export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+      export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
+      export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+      export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
+    fi
+  #}}}
+#}}}
+# ALIAS {{{
+  alias freemem='sudo /sbin/sysctl -w vm.drop_caches=3'
+  # MODIFIED COMMANDS {{{
+    alias df='df -h'
+    alias diff='colordiff'              # requires colordiff package
+    alias du='du -c -h'
+    alias free='free -m'                # show sizes in MB
+    alias mkdir='mkdir -p -v'
+    alias more='less'
+    alias ping='ping -c 5'
+  #}}}
+  # PRIVILEGED ACCESS {{{
+    if ! $_isroot; then
+      alias sudo='sudo '
+      alias scat='sudo cat'
+      alias svim='sudo vim'
+      alias root='sudo su'
+      alias reboot='sudo reboot'
+      alias halt='sudo halt'
+    fi
+  #}}}
+  # PACMAN ALIASES {{{
+    # we're on ARCH
+    if $_isarch; then
+      # we're not root
+      if ! $_isroot; then
+        alias pacman='sudo pacman'
+      fi
+      alias pacupg='pacman -Syu'            # Synchronize with repositories and then upgrade packages that are out of date on the local system.
+      alias pacupd='pacman -Sy'             # Refresh of all package lists after updating /etc/pacman.d/mirrorlist
+      alias pacin='pacman -S'               # Install specific package(s) from the repositories
+      alias pacinu='pacman -U'              # Install specific local package(s)
+      alias pacre='pacman -R'               # Remove the specified package(s), retaining its configuration(s) and required dependencies
+      alias pacun='pacman -Rcsn'            # Remove the specified package(s), its configuration(s) and unneeded dependencies
+      alias pacinfo='pacman -Si'            # Display information about a given package in the repositories
+      alias pacse='pacman -Ss'              # Search for package(s) in the repositories
+
+      alias pacupa='pacman -Sy && sudo abs' # Update and refresh the local package and ABS databases against repositories
+      alias pacind='pacman -S --asdeps'     # Install given package(s) as dependencies of another package
+      alias pacclean="pacman -Sc"           # Delete all not currently installed package files
+      alias pacmake="makepkg -fcsi"         # Make package from PKGBUILD file in current directory
+    fi
+  #}}}
+  # LS {{{
+    alias ls='ls -hF --color=auto'
+    alias lr='ls -R'                    # recursive ls
+    alias ll='ls -alh'
+    alias la='ll -A'
+    alias lm='la | less'
+  #}}}
+#}}}
+# FUNCTIONS {{{
+  # TOP 10 COMMANDS {{{
+    # copyright 2007 - 2010 Christopher Bratusek
+    top10() { history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head; }
+  #}}}
+  # UP {{{
+    # Goes up many dirs as the number passed as argument, if none goes up by 1 by default
+    up() {
+      local d=""
+      limit=$1
+      for ((i=1 ; i <= limit ; i++)); do
+        d=$d/..
+      done
+      d=$(echo $d | sed 's/^\///')
+      if [[ -z "$d" ]]; then
+        d=..
+      fi
+      cd $d
+    }
+  #}}}
+  # ARCHIVE COMPRESS {{{
+    compress() {
+      if [[ -n "$1" ]]; then
+        FILE=$1
+        case $FILE in
+        *.tar ) shift && tar cf $FILE $* ;;
+    *.tar.bz2 ) shift && tar cjf $FILE $* ;;
+     *.tar.gz ) shift && tar czf $FILE $* ;;
+        *.tgz ) shift && tar czf $FILE $* ;;
+        *.zip ) shift && zip $FILE $* ;;
+        *.rar ) shift && rar $FILE $* ;;
+        esac
+      else
+        echo "usage: compress <foo.tar.gz> ./foo ./bar"
+      fi
+    }
+  #}}}
+  # REMIND ME, ITS IMPORTANT! {{{
+    # usage: remindme <time> <text>
+    # e.g.: remindme 10m "omg, the pizza"
+    remindme() { sleep $1 && zenity --info --text "$2" & }
+  #}}}
+  # SIMPLE CALCULATOR #{{{
+    # usage: calc <equation>
+    calc() {
+      if which bc &>/dev/null; then
+        echo "scale=3; $*" | bc -l
+      else
+        awk "BEGIN { print $* }"
+      fi
+    }
+  #}}}
+  # FILE & STRINGS RELATED FUNCTIONS {{{
+    ## FIND A FILE WITH A PATTERN IN NAME {{{
+      # ff() { find . -type f -iname '*'$*'*' -ls ; }
+    #}}}
+    ## FIND A FILE WITH PATTERN $1 IN NAME AND EXECUTE $2 ON IT {{{
+      fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;  ; }
+    #}}}
+    ## FINDS DIRECTORY SIZES AND LISTS THEM FOR THE CURRENT DIRECTORY {{{
+      dirsize () {
+        du -shx * .[a-zA-Z0-9_]* 2> /dev/null | egrep '^ *[0-9.]*[MG]' | sort -n > /tmp/list
+        egrep '^ *[0-9.]*M' /tmp/list
+        egrep '^ *[0-9.]*G' /tmp/list
+        rm -rf /tmp/list
+      }
+    #}}}
+  #}}}
+  # ENTER AND LIST DIRECTORY{{{
+    # function cd() { builtin cd -- "$@" && { [ "$PS1" = "" ] || ls -hrt --color; }; }
+  #}}}
+  # SYSTEMD SUPPORT {{{
+    if which systemctl &>/dev/null; then
+      start() {
+        sudo systemctl start $1.service
+      }
+      restart() {
+        sudo systemctl restart $1.service
+      }
+      stop() {
+        sudo systemctl stop $1.service
+      }
+      enable() {
+        sudo systemctl enable $1.service
+      }
+      status() {
+        sudo systemctl status $1.service
+      }
+      disable() {
+        sudo systemctl disable $1.service
+      }
+    fi
+  #}}}
+#}}}

@@ -1,0 +1,36 @@
+#!/bin/bash
+# Connect Seagate Backup Plus Drive
+# Mount point: /run/media/humitos/Seagate Backup Plus Drive
+
+set -e
+
+# Connect Xiaomi MI8
+# fusermount -u xiaomi-mi8 || echo
+
+# jmtpfs xiaomi-mi8
+
+# Remove thumbnails which size it's crazy!
+# rm -rf 'nexus/interno compartido/DCIM/.thumbnails'
+
+# BE CAREFUL with ``--remove-source-files`` since it removes the files
+# transfered from source into destination
+for x in Pictures DCIM bluetooth Download Telegram WhatsApp Slack MIUI;
+do
+    rsync -rav \
+          --progress \
+          --omit-dir-times \
+          --no-perms \
+          --inplace \
+          --size-only \
+          --exclude .thumbnails \
+          --exclude .music \
+          --exclude .cache \
+          --exclude .Shared \
+          --exclude .trash \
+          --exclude debug_log \
+          --remove-source-files \
+          /run/user/1000/gvfs/mtp:host=Xiaomi_MI_8_f82db1c8/Internal\ shared\ storage/$x/ \
+          '/run/media/humitos/Seagate Backup Plus Drive/xiaomi-mi8/'$x;
+done
+
+# fusermount -u xiaomi-mi8

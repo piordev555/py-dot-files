@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | python

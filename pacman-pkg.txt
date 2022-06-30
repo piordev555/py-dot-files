@@ -1,0 +1,182 @@
+# ;; Local Variables:
+# ;; eval: (flyspell-mode -1)
+# ;; End:
+
+# Packages installed in ArchLinux
+# M-x sort-lines
+
+# Emacs
+emacs
+
+## FlySpell
+aspell-en
+aspell-es
+
+## mate.el
+espeak
+
+# ------------------------------------------------
+
+# Compiling / Building
+autoconf
+autogen
+automake
+
+bat
+
+# Bluetooth
+bluez
+bluez-tools
+bluez-utils
+blueman
+pulseaudio-bluetooth
+
+# Development
+bzr
+cabextract
+colordiff
+curl
+docker
+git
+subversion
+virtualbox
+
+# Arch
+expac
+
+fatsort
+
+# Office
+firefox-i18n-es-ar
+flashplugin
+libreoffice
+fswebcam
+
+# Graphics
+gimp
+gthumb
+imagemagick
+inkscape
+
+# System Utilities
+htop
+httpie
+iotop
+iproute2
+jhead
+jq
+
+ipython
+lame
+lib32-mesa
+
+# Lock the session when going to suspend
+light-locker
+xscreensaver
+
+mc
+meld
+mencoder
+mercurial
+mesa
+mesa-demos
+mesa-libgl
+mplayer
+multitail
+namcap
+netcat
+openshot
+pandoc
+qt4
+recordmydesktop
+ruby
+sddm
+thunderbird
+thunderbird-i18n-es-ar
+tig
+ttf-ubuntu-font-family
+unrar
+vim
+vlc
+wget
+wmctrl
+workrave
+xclip
+swig
+
+
+# Games
+steam
+steam-native-runtime
+
+## Kelvin and the Infamous Machine
+## http://store.steampowered.com/app/376520/Kelvin_and_the_Infamous_Machine/
+jdk8-openjdk
+jre8-openjdk
+
+## Drivers for my Intel Card on Lenovo X1 Carbon 5th Generation
+xf86-video-intel
+
+gnujump
+
+# Audio
+audacity
+
+openshot
+
+# http://maslinux.es/como-acelerar-el-proceso-de-compilacion-al-instalar-paquetes-de-aur/
+ccache
+
+
+# PDF view
+evince
+
+# Audio/Vide codecs
+xvidcore
+x265
+x264
+wavpack
+libvorbis
+libtheora
+opus
+flac
+faac
+
+
+# nodejs
+nodejs
+npm
+
+
+# argentinaenpython.com / django girls tutorial
+calibre
+
+
+# replacement for xarchiver
+file-roller
+
+
+# Image visualizer
+feh
+geeqie
+
+# https://github.com/garabik/grc
+# colorize commands output
+grc
+
+hub
+
+# unlock gnome-keyring at login (it's used by Google Chrome, for example)
+# https://wiki.archlinux.org/index.php/GNOME/Keyring#Without_a_display_manager
+# https://wiki.archlinux.org/index.php/GNOME/Keyring#With_a_display_manager
+libgnome-keyring
+
+# zsh
+autojump
+powerline-fonts
+zsh
+thefuck
+
+
+# Compile Python with pyenv
+tk

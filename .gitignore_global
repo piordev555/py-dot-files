@@ -1,0 +1,41 @@
+# emacs files
+*.restclient
+*~
+*#
+.projectile
+.dir-locals.el
+TAGS
+locate.db
+\#*
+*_flymake.py
+flycheck_*.py
+
+# git
+*.orig
+
+# virtualenv
+.venv
+.python-version
+
+
+*.questions
+.style.yapf
+
+*.rej
+
+setup.cfg
+celerybeat-schedule
+
+.node-version
+.pytest_cache
+
+*dev.db*
+
+.ignore
+
+spam-data/
+datasets/
+
+.mypy_cache/
+/TODOs.org
+/.dotenv

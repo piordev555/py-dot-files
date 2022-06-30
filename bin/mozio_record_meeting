@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+mkdir -p /home/humitos/mozio/meetings
+cd /home/humitos/mozio/meetings
+
+# Xubuntu 16.04 LTS
+# recordmydesktop \
+#   --width=10 --height=10 --on-the-fly-encoding --v_quality=0 --v_bitrate=0 \
+#   --s_quality=5 --no-wm-check --no-frame \
+#   --output=meeting-`date +"%Y%m%d"`
+
+
+# ArchLinux
+# recordMyDesktop v0.3.8.1
+recordmydesktop \
+    --device pulse \
+    --width 10 \
+    --height 10 \
+    --on-the-fly-encoding \
+    --v_quality 0 \
+    --v_bitrate 0 \
+    --s_quality 5 \
+    --no-wm-check \
+    --no-frame \
+    -o meeting-`date +"%Y%m%d"`

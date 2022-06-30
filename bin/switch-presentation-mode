@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+# Script to switch presentation mode on/off
+# CURRENT_VALUE=`xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/presentation-mode`
+SET_TO=$1
+if [ $SET_TO == "on" ]
+then
+    SET_TO="true"
+    notify-send -i video-display -t 4000 "Presentation mode"  Enabled
+else
+    SET_TO="false"
+    notify-send -i video-display -t 4000 "Presentation mode"  Disabled
+fi
+
+xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/presentation-mode --set $SET_TO

@@ -1,0 +1,4 @@
+LOG_FILE=/home/humitos/.backuptrac.log
+echo ----- >> $LOG_FILE
+echo `date` >> $LOG_FILE
+rsync -racv elblogdehumitos.com:/tmp/trac.mkaufmann.com.ar-rsync /home/humitos 2>&1 >> $LOG_FILE

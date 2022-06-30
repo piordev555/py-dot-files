@@ -1,0 +1,84 @@
+# ; -*- mode: sh;-*-
+
+alias youtube-dl='PYTHONPATH=$PYTHONPATH:/home/humitos/Source/youtube-dl/ ~/Source/youtube-dl/bin/youtube-dl --restrict-filenames --retries 50 --continue'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+alias cp='cp -iv'
+
+alias servethis="python -c 'import SimpleHTTPServer; SimpleHTTPServer.test()'"
+alias servesmtp="python -m smtpd -n -c DebuggingServer localhost:1025"
+
+alias pycclean='find . -name "*.pyc" -exec rm {} \;'
+
+# some ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# enable color supporof ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+## EMACS
+alias e='emacsclient --no-wait --alternate-editor vim'
+# http://emacsredux.com/blog/2013/04/21/edit-files-as-root/
+# alias E="SUDO_EDITOR=\"emacsclient --alternate-editor emacs\" sudoedit"
+
+alias supdate='sudo apt update'
+alias supgrade='sudo apt upgrade'
+
+# alias fades='~/./.pyenv/versions/3.6.1/bin/python /home/humitos/.fades/bin/fades'
+# alias bpython='fades -d bpython -d jedi -d watchdog -x bpython'
+# alias docker-compose='fades -d docker-compose -x docker-compose'
+# alias ipython='fades -d ipython -x ipython'
+
+# commented because it interfers with ff
+# https://github.com/silentbicycle/ff
+# alias ff='firefox'
+
+alias twine='fades -d twine -x twine'
+
+alias g=git
+alias o='cd /home/humitos/mozio/ondemand'
+alias r='cd /home/humitos/rtfd/code/readthedocs.org'
+alias rc='cd /home/humitos/rtfd/code/readthedocs-corporate'
+
+# alias conda=/home/humitos/.miniconda3/bin/conda
+alias py=python
+
+alias deactivate='pyenv deactivate'
+alias workon='pyenv activate'
+
+alias jbl='~/./.pyenv/versions/3.6.1/bin/python ~/bin/jbl_flip3.py'
+
+alias docker-down='docker-compose -f docker-compose.yml down --remove-orphans'
+alias docker-kill='docker-compose -f docker-compose.yml kill'
+alias docker-shell='docker-compose -f docker-compose.yml run --service-ports shell'
+alias docker-logs='docker-compose -f docker-compose.yml logs -f'
+alias docker-login='aws ecr get-login --no-include-email --region us-east-1'
+
+# https://pypi.python.org/pypi/ripdb
+alias ripdb='SAVED_STTY=`stty -g`; stty -icanon -opost -echo -echoe -echok -echoctl -echoke; nc 127.0.0.1 4444; stty $SAVED_STTY'
+
+# https://github.com/garabik/grc
+[[ -s "/etc/profile.d/grc.bashrc" ]] && source /etc/profile.d/grc.bashrc
+
+alias ping='colourify ping -c 5'
+
+alias vim=nvim
+alias v=nvim

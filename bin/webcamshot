@@ -1,0 +1,14 @@
+#!/bin/bash
+
+fswebcam \
+  --quiet \
+  --no-timestamp \
+  --no-banner \
+  --no-info \
+  --no-title \
+  --no-subtitle \
+  --no-underlay \
+  -r 1280x720 \
+  --png 9 \
+  -D 1 \
+  --save /home/humitos/Descargas/`date '+%Y-%m-%d_%H:%M'`_web-cam-shot.png

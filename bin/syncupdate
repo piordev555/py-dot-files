@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# update system
+
+# UBUNTU
+# sudo apt update
+# sudo apt upgrade -dy
+# sudo apt dist-upgrade -dy
+
+# update RTD repositories and environments
+rtd_update_org_repositories
+rtd_update_com_repositories
+
+# rtd_docker_pull
+
+# update asdf
+cd ~/.asdf; git pull ; cd -
+
+# update pyenv
+cd ~/.pyenv ; git pull ; cd -
+cd ~/.pyenv/plugins/pyenv-virtualenv ; git pull ; cd -
+
+# update nodenv
+cd ~/.nodenv ; git pull ; cd -
+cd ~/.nodenv/plugins/node-build ; git pull ; cd -
+
+# update oh-my-zsh
+cd ~/.oh-my-zsh ; git pull ; cd -
+cd ~/.oh-my-zsh/custom/plugins ; for plugin in `ls`; do cd $plugin ; git pull ; cd -; done
+
+# ARCHLINUX
+sudo pacman -Suy --downloadonly --noconfirm
+# yaourt -Su --aur
+
+yay -Pwwq
+
+# update fades
+# cd ~/.fades ; git pull ; cd -
+
+# update emacs configuration
+# cd ~/.emacs.d ; ./bin/update_git_submodules ; cd -
+
+# backup personal trac
+# backup_trac
+
+# backup pacman database
+# yaourt -B /home/humitos/.pacman
+
+# update raspberrypi packages
+# added `--ignore wpa_supplicant --ignore openssl` because of a bug in
+# openssl that makes the installation to fail
+# sudo pacman -S --force wpa_supplicant
+# sudo pacman -S --force openssl
+# ssh alarm@192.168.10.1 sudo pacman -Suy --noconfirm  # --ignore wpa_supplicant --ignore openssl
+
+# clean pacman old packages
+# ssh alarm@192.168.10.1 sudo pacman -Sc --noconfirm

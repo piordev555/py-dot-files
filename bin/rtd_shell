@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Connecting to $1..."
+mosh $1 \
+    -- \
+    sudo --user docs --login /home/docs/bin/python /home/docs/checkouts/readthedocs.org/manage.py shell_plus

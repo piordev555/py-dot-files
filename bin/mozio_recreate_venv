@@ -1,0 +1,41 @@
+# ; -*- mode: sh -*-
+#!/bin/bash
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# we need to hardcode them because they may not exists
+VIRTUALENVS="mozio-auth mozio-data-entry mozio-ondemand mozio-locations mozio-search"
+
+for venv in ${VIRTUALENVS}; do
+    pyenv virtualenv-delete --force ${venv}
+    pyenv virtualenv 2.7.13 ${venv}
+    pyenv activate ${venv}
+    pip install -U pip
+
+    REPO_DIR=/home/humitos/mozio/${venv}
+
+    if [ "mozio-auth" == ${venv} ]; then
+        REPO_DIR=/home/humitos/mozio/mozio_auth
+    fi
+    if [ "mozio-ondemand" == ${venv} ]; then
+        REPO_DIR=/home/humitos/mozio/ondemand
+    fi
+    if [ "mozio-data-entry" == ${venv} ]; then
+        REPO_DIR=/home/humitos/mozio/data-entry
+    fi
+
+    echo "Repository directory:" ${REPO_DIR}
+    if [ -d ${REPO_DIR} ]; then
+        # workon ${venv};
+        if [ -d ${REPO_DIR}/requirements/dev.txt ]; then
+            REQUIREMENTS=dev.txt
+        else
+            REQUIREMENTS=base.txt
+        fi
+        pip install -r ${REPO_DIR}/requirements/${REQUIREMENTS}
+    fi
+    pip install -U -r /home/humitos/.emacs.d/requirements.elpy.in
+    pip install -U -r /home/humitos/mozio/requirements.utils.txt
+    deactivate;
+done

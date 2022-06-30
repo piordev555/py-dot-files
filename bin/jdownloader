@@ -1,0 +1,4 @@
+# vncserver :4
+# export DISPLAY=michifus:4
+nice java -Xmx512m -jar ~/.jdownloader/JDownloader.jar
+

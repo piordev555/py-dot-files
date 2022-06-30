@@ -1,0 +1,3 @@
+#!/bin/bash
+
+~/Android/Sdk/tools/emulator -avd Nexus_5_API_24 -use-system-libs

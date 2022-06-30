@@ -1,0 +1,8 @@
+PYTHONPATH=/home/humitos/Source/icaro \
+python -c "import carga, docker, ConfigParser, os; \
+cfg = ConfigParser.ConfigParser(); \
+cfg.read('/home/humitos/Source/icaro/config.ini'); \
+carga.compilar_pic('main', cfg) ; \
+carga.upload_pic('main', cfg) ; \
+dir_conf = os.path.expanduser('~') + '/.icaro/firmware'; \
+docker.docker(dir_conf + '/temporal/' + 'main' + '.hex')"

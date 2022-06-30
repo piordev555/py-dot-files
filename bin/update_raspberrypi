@@ -1,0 +1,2 @@
+rsync -rav --delete-after --copy-links /home/humitos/Source/argentinaenpython.com.ar/web/output/* pi@10.42.0.17:apps/argentinaenpython.com.ar/
+rsync -rav --delete-after --copy-links /home/humitos/Source/blog/nikola/output/* pi@10.42.0.17:apps/elblogdehumitos.com.ar/

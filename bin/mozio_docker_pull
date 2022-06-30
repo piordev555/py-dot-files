@@ -1,0 +1,32 @@
+#!/bin/bash
+
+MOZIO_PATH=/home/humitos/mozio
+MOZIO_REPOSITORIES="mozio ondemand data-entry mozio-locations mozio-commons mozio_auth mozio-search mozio-corporate"
+
+# FADES=/home/humitos/Source/3rdparty/fades/bin/fades
+# DOCKER_COMPOSE="${FADES} -d docker-compose -x docker-compose"
+
+DOCKER_COMPOSE="docker-compose"
+
+# login into AWS ECR
+LOGIN=`/home/humitos/.pyenv/versions/3.6.2/bin/aws ecr get-login --no-include-email --region us-east-1`
+$LOGIN
+
+for REPO in ${MOZIO_REPOSITORIES}; do
+  echo "Pulling docker-compose from '${REPO}'...";
+  ${DOCKER_COMPOSE} --file ${MOZIO_PATH}/${REPO}/docker-compose.yml pull # --parallel
+done
+
+
+# remove all the untagged images to save space
+docker images | grep "<none>" | awk '{ print $3 }' | xargs -I '{}' docker rmi --force '{}'
+
+# http://blog.yohanliyanage.com/2015/05/docker-clean-up-after-yourself/
+# remove all the containers in "exited" status
+docker rm -v $(docker ps -a -q -f status=exited)
+
+# remove "dangling" images
+docker rmi $(docker images -f "dangling=true" -q)
+
+# more work on "dangling" ones
+docker volume rm $(docker volume ls -qf dangling=true)
